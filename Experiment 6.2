@@ -1,1 +1,105 @@
+import java.util.Scanner;
 
+class Node {
+    int data;
+    Node next;
+    
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class Queue {
+    Node front, rear;
+
+    Queue() {
+        front = rear = null;
+    }
+
+   
+     static void enqueue(int data) {
+        Node newNode = new Node(data);
+        if (rear == null) { // if queue - empty
+            front = rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
+        }
+        System.out.println(data + " enqueued to queue");
+    }
+
+   
+   static void dequeue() {
+        if (front == null) {
+            System.out.println("Queue Underflow (Empty)");
+            return;
+        }
+        System.out.println("Dequeued: " + front.data);
+        front = front.next;
+        if (front == null) { 
+            rear = null;
+        }
+    }
+
+   
+    static  void peek() {
+        if (front == null) {
+            System.out.println("Queue is Empty");
+        } else {
+            System.out.println("Front element: " + front.data);
+        }
+    }
+
+   
+   static void display() {
+        if (front == null) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+        System.out.print("Queue: ");
+        Node temp = front;
+        while (temp != null) {
+            System.out.print(temp.data + " -> ");
+            temp = temp.next;
+        }
+        System.out.println("NULL");
+    }
+}
+
+public class QueueLinkedList {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Queue q = new Queue();
+        int choice, value;
+
+        do {
+            System.out.println("\n1.Enqueue  2.Dequeue  3.Display  4.Peek  5.Exit");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter value: ");
+                    value = sc.nextInt();
+                    q.enqueue(value);
+                    break;
+                case 2:
+                    q.dequeue();
+                    break;
+                case 3:
+                    q.display();
+                    break;
+                case 4:
+                    q.peek();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        } while (choice != 5);
+
+        sc.close();
+    }
+}
