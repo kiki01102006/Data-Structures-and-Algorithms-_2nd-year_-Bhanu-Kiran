@@ -1,1 +1,158 @@
+import java.util.Scanner;
 
+class SparseMatrix {
+    int[][] sparse;  
+    int rows, cols, nonZero;
+
+    
+    SparseMatrix(int[][] mat, int r, int c) {
+        rows = r;
+        cols = c;
+        nonZero = 0;
+
+     
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (mat[i][j] != 0) nonZero++;
+            }
+        }
+
+      
+        sparse = new int[nonZero + 1][3];
+        sparse[0][0] = r;
+        sparse[0][1] = c;
+        sparse[0][2] = nonZero;
+
+        int k = 1;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (mat[i][j] != 0) {
+                    sparse[k][0] = i;
+                    sparse[k][1] = j;
+                    sparse[k][2] = mat[i][j];
+                    k++;
+                }
+            }
+        }
+    }
+
+    // Display func.
+  public   void display() {
+        System.out.println("Row Col Val");
+        for (int i = 0; i <= nonZero; i++) {
+            System.out.println(sparse[i][0] + "   " + sparse[i][1] + "   " + sparse[i][2]);
+        }
+    }
+
+   //transpose
+    SparseMatrix transpose() {
+        int[][] trans = new int[nonZero + 1][3];
+        trans[0][0] = cols;
+        trans[0][1] = rows;
+        trans[0][2] = nonZero;
+
+        int k = 1;
+        for (int col = 0; col < cols; col++) {
+            for (int i = 1; i <= nonZero; i++) {
+                if (sparse[i][1] == col) {
+                    trans[k][0] = sparse[i][1];
+                    trans[k][1] = sparse[i][0];
+                    trans[k][2] = sparse[i][2];
+                    k++;
+                }
+            }
+        }
+
+        SparseMatrix t = new SparseMatrix(new int[0][0], 0, 0);
+        t.rows = trans[0][0];
+        t.cols = trans[0][1];
+        t.nonZero = trans[0][2];
+        t.sparse = trans;
+        return t;
+    }
+
+    // Adding the matrices
+    SparseMatrix add(SparseMatrix b) {
+        if (rows != b.rows || cols != b.cols) {
+            System.out.println("Addition not possible, dimensions mismatch!");
+            return null;
+        }
+
+        int[][] result = new int[nonZero + b.nonZero + 1][3];
+        result[0][0] = rows;
+        result[0][1] = cols;
+
+        int i = 1, j = 1, k = 1;
+        while (i <= nonZero && j <= b.nonZero) {
+            if (sparse[i][0] < b.sparse[j][0] ||
+               (sparse[i][0] == b.sparse[j][0] && sparse[i][1] < b.sparse[j][1])) {
+                result[k++] = sparse[i++];
+            } else if (b.sparse[j][0] < sparse[i][0] ||
+                      (b.sparse[j][0] == sparse[i][0] && b.sparse[j][1] < sparse[i][1])) {
+                result[k++] = b.sparse[j++];
+            } else {
+               
+                int sum = sparse[i][2] + b.sparse[j][2];
+                if (sum != 0) {
+                    result[k][0] = sparse[i][0];
+                    result[k][1] = sparse[i][1];
+                    result[k][2] = sum;
+                    k++;
+                }
+                i++;
+                j++;
+            }
+        }
+
+        while (i <= nonZero) result[k++] = sparse[i++];
+        while (j <= b.nonZero) result[k++] = b.sparse[j++];
+
+        result[0][2] = k - 1;
+
+        SparseMatrix res = new SparseMatrix(new int[0][0], 0, 0);
+        res.rows = rows;
+        res.cols = cols;
+        res.nonZero = result[0][2];
+        res.sparse = result;
+        return res;
+    }
+
+  
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        
+        System.out.print("Enter rows and cols of matrix: ");
+        int r = sc.nextInt(), c = sc.nextInt();
+        int[][] mat1 = new int[r][c];
+        System.out.println("Enter first matrix:");
+        for (int i = 0; i < r; i++)
+            for (int j = 0; j < c; j++)
+                mat1[i][j] = sc.nextInt();
+
+        SparseMatrix s1 = new SparseMatrix(mat1, r, c);
+        System.out.println("\nSparse Matrix 1:");
+        s1.display();
+
+     
+        System.out.println("\nEnter second matrix:");
+        int[][] mat2 = new int[r][c];
+        for (int i = 0; i < r; i++)
+            for (int j = 0; j < c; j++)
+                mat2[i][j] = sc.nextInt();
+
+        SparseMatrix s2 = new SparseMatrix(mat2, r, c);
+        System.out.println("\nSparse Matrix 2:");
+        s2.display();
+
+      //add
+        System.out.println("\nAfter Addition:");
+        SparseMatrix sum = s1.add(s2);
+        if (sum != null) sum.display();
+
+        // Transpose
+        System.out.println("\nTranspose of Matrix 1:");
+        SparseMatrix t1 = s1.transpose();
+        t1.display();
+    }
+}
