@@ -1,1 +1,194 @@
+import java.util.Scanner;
 
+
+class Node {
+    int data;
+    Node next;
+
+    Node(int d) {
+        data = d;
+        next = null;
+    }
+}
+
+
+class SingleLL {
+    Node head;
+
+    // Insert at beginning
+   public void insert_at_beg(int d) {
+        Node newnode = new Node(d);
+        newnode.next = head;
+        head = newnode;
+    }
+
+    // Insert at end
+   public void insert_at_end(int d) {
+        Node newnode = new Node(d);
+        if (head == null) {
+            head = newnode;
+            return;
+        }
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = newnode;
+    }
+
+    // Insert at a given position 
+  public void insert_at_pos(int d, int pos) {
+        if (pos <= 0) {
+            System.out.println("Invalid position.");
+            return;
+        }
+        if (pos == 1) {
+            insert_at_beg(d);
+            return;
+        }
+        Node newnode = new Node(d);
+        Node temp = head;
+        for (int i = 1; i < pos - 1; i++) {
+            if (temp == null) {
+                System.out.println("Position out of bounds.");
+                return;
+            }
+            temp = temp.next;
+        }
+        newnode.next = temp.next;
+        temp.next = newnode;
+    }
+
+    // Delete at beginning
+   public void delete_at_beg() {
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+        System.out.println(head.data + " deleted from beginning.");
+        head = head.next;
+    }
+
+    // Delete at end
+   public void delete_at_end() {
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+        if (head.next == null) {
+            System.out.println(head.data + " deleted from list.");
+            head = null;
+            return;
+        }
+        Node temp = head;
+        while (temp.next.next != null) {
+            temp = temp.next;
+        }
+        System.out.println(temp.next.data + " deleted from end.");
+        temp.next = null;
+    }
+
+    // Delete at a given pos
+   public void delete_at_pos(int pos) {
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+        if (pos <= 0) {
+            System.out.println("Invalid position.");
+            return;
+        }
+        if (pos == 1) {
+            delete_at_beg();
+            return;
+        }
+        Node temp = head;
+        for (int i = 1; i < pos - 1; i++) {
+            if (temp.next == null) {
+                System.out.println("Position out of bounds.");
+                return;
+            }
+            temp = temp.next;
+        }
+        if (temp.next == null) {
+            System.out.println("Position out of bounds.");
+            return;
+        }
+        System.out.println(temp.next.data + " deleted from position " + pos);
+        temp.next = temp.next.next;
+    }
+
+    
+   public void display() {
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+        Node temp = head;
+        System.out.print("Linked List: ");
+        while (temp != null) {
+            System.out.print(temp.data + " -> ");
+            temp = temp.next;
+        }
+        System.out.println("null");
+    }
+
+    
+public int count() {
+        int cnt = 0;
+        Node temp = head;
+        while (temp != null) {
+            cnt++;
+            temp = temp.next;
+        }
+        return cnt;
+    }
+
+  
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        SingleLL list = new SingleLL();
+        int choice, val, pos;
+
+        do {
+            System.out.println("\n1.Insert at Beginning  2.Insert at End  3.Insert at Position");
+            System.out.println("4.Delete at Beginning  5.Delete at End  6.Delete at Position");
+            System.out.println("7.Display  8.Count Nodes  9.Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1 -> {
+                    System.out.print("Enter value to insert: ");
+                    val = sc.nextInt();
+                    list.insert_at_beg(val);
+                }
+                case 2 -> {
+                    System.out.print("Enter value to insert: ");
+                    val = sc.nextInt();
+                    list.insert_at_end(val);
+                }
+                case 3 -> {
+                    System.out.print("Enter value to insert: ");
+                    val = sc.nextInt();
+                    System.out.print("Enter position: ");
+                    pos = sc.nextInt();
+                    list.insert_at_pos(val, pos);
+                }
+                case 4 -> list.delete_at_beg();
+                case 5 -> list.delete_at_end();
+                case 6 -> {
+                    System.out.print("Enter position to delete: ");
+                    pos = sc.nextInt();
+                    list.delete_at_pos(pos);
+                }
+                case 7 -> list.display();
+                case 8 -> System.out.println("Number of nodes: " + list.count());
+                case 9 -> System.out.println("Exiting...");
+                default -> System.out.println("Invalid choice.");
+            }
+        } while (choice != 9);
+
+        sc.close();
+    }
+}
