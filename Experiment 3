@@ -1,1 +1,59 @@
 
+
+import java.util.Scanner;
+
+class PolynomialAddition {
+    
+   
+    static int[] polyAdd(int p1[], int p2[], int maxdegree) {
+        int res[] = new int[maxdegree + 1];
+        for (int i = 0; i <= maxdegree; i++) {
+            res[i] = p1[i] + p2[i];
+        }
+        return res;
+    }
+
+ 
+    static void display(int poly[], int maxdegree) {
+        for (int i = maxdegree; i >= 0; i--) {
+            if (poly[i] != 0) {
+                System.out.print(poly[i] + "x^" + i);
+                if (i != 0) System.out.print(" + ");
+            }
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int maxdegree = 2;
+        int p1[] = new int[maxdegree + 1];
+        int p2[] = new int[maxdegree + 1];
+
+       
+        System.out.println("Enter coefficients of first polynomial (from x^0 to x^" + maxdegree + "): ");
+        for (int i = 0; i <= maxdegree; i++) {
+            p1[i] = sc.nextInt();
+        }
+
+      
+        System.out.println("Enter coefficients of second polynomial (from x^0 to x^" + maxdegree + "): ");
+        for (int i = 0; i <= maxdegree; i++) {
+            p2[i] = sc.nextInt();
+        }
+
+     
+        int res[] = polyAdd(p1, p2, maxdegree);
+
+        // Display
+        System.out.print("P1(x) = ");
+        display(p1, maxdegree);
+
+        System.out.print("P2(x) = ");
+        display(p2, maxdegree);
+
+        System.out.print("Resultant Polynomial: ");
+        display(res, maxdegree);
+    }
+}
