@@ -1,1 +1,24 @@
+public class ArrayAddressSimulation {
+    public static void main(String[] args) {
+        int rows = 3;
+        int cols = 4;
+        int[][] arr = new int[rows][cols];
 
+     
+        int baseAddress = 1000;
+        int wordSize = 4; // 4 bytes for int in 32-bit system
+
+        System.out.println("Base Address (simulated) = " + baseAddress);
+        System.out.println("Word Size = " + wordSize + " bytes\n");
+
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                // Formula: Address = Base + ((i * number_of_columns) + j) * wordSize
+                int theoreticalAddress = baseAddress + ((i * cols + j) * wordSize);
+
+                System.out.println("Address of arr[" + i + "][" + j + "] = " + theoreticalAddress);
+            }
+        }
+    }
+}
