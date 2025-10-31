@@ -1,0 +1,30 @@
+//Write a Java program that reads a number n and checks if it is a strong number. A strong number is one where the sum of the
+ factorial of its digits equals the number itself. For example, 145 is a strong number because 1! + 4! + 5! = 145
+
+
+ import java.util.Scanner;
+ public class StrongNumber {
+    public static int factorial(int num) {
+        int fact = 1;
+        for (int i = 1; i <= num; i++) {
+            fact *= i;
+        }
+        return fact;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int n = sc.nextInt();
+        int original = n, sum = 0;
+
+ while (n > 0) {
+ int digit = n % 10;
+ sum += factorial(digit);
+ n /= 10;
+ }
+ if (sum == original)
+ System.out.println(original + " is a Strong number.");
+ else
+ System.out.println(original + " is NOT a Strong number.");
+ }
+ }
